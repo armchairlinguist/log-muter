@@ -6,7 +6,7 @@ require 'httparty'
 MAX_VELOCITY = ENV['PAPERTRAIL_VELOCITY'] || 100
 
 # How many alert invocations over the limit are required before the muting/unmuting occurs?
-SUSTAINED_DURATION = ENV['PAPERTRAIL_VELOCITY'] || 10
+SUSTAINED_DURATION = ENV['PAPERTRAIL_DURATION'] || 10
 
 # Provide your API key as an env var
 API_KEY = ENV['PAPERTRAIL_API_KEY']
