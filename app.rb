@@ -31,6 +31,7 @@ end
 
 post '/log' do
   payload = Yajl::Parser.parse(params[:payload])
+  return [400, ["Not a valid count alert payload"]] unless payload['counts']
   counts = payload['counts']
   counts.each do |source|
     system_name = source['source_name']
@@ -46,7 +47,8 @@ post '/log' do
         mute_invocations[system_name] += 1
       end
     else
-      puts "#{system_name} not above threshold"
+      puts "#{system_name} not above #{MAX_VELOCITY}, resetting mute invocations"
+      mute_invocations[system_name] = 0
     end
   end
   200
