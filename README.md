@@ -4,9 +4,9 @@ log-muter is a simple Sinatra webhook app (designed to be deployed to Heroku) th
 
 ## Setup
 
-The app needs a Papertrail API key to make requests to the Papertrail account - set this in the PAPERTRAIL_API_KEY env variable.
+The app needs a Papertrail API key to make requests to the Papertrail account - set this in the `PAPERTRAIL_API_KEY` env variable.
 
-A desirable log velocity will vary depending on the account. Setting a custom velocity threshold using MAX_VELOCITY is recommended. It's also possible to set the number of sequential alert invocations exceeding the threshold (SUSTAINED_DURATION) before the system is muted. For example, if this is set to 10 and the alert runs every minute (see below), the system must be rogue for 10 minutes before being muted.
+A desirable log velocity will vary depending on the account. Setting a custom velocity threshold using `PAPERTRAIL_VELOCITY` is recommended. It's also possible to set the number of sequential alert invocations exceeding the threshold (`PAPERTRAIL_DURATION`) before the system is muted. For example, if this is set to 10 and the alert runs every minute (see below), the system must be rogue for 10 minutes before being muted.
 
 ## Account Setup
 
@@ -30,7 +30,7 @@ In addition to requiring a count-only webhook, the app doesn't do anything if th
 
 The app doesn't unmute systems. It would be possible to write a different route to handle that (and maybe hook it up to an [inactivity alert](https://help.papertrailapp.com/kb/how-it-works/alerts/#inactivity-alerts)), but: 
 
-1. In an ideal worldd, this won't go off very often.
+1. In an ideal world, this app won't mute systems very often.
 2. It'll probably involve some manual work to fix. 
 
 Adding "update the system name back to normal after it's sorted" to the manual to-do list should probably work fine. Feel free to submit a PR if that turns out not to be true.
