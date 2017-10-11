@@ -31,7 +31,6 @@ end
 
 post '/log' do
   payload = Yajl::Parser.parse(params[:payload])
-  puts payload
   counts = payload['counts']
   counts.each do |source|
     system_name = source['source_name']
@@ -46,6 +45,8 @@ post '/log' do
         puts "#{system_name} is above #{MAX_VELOCITY}, incrementing mute invocations"
         mute_invocations[system_name] += 1
       end
+    else
+      puts "#{system_name} not above threshold"
     end
   end
   200
