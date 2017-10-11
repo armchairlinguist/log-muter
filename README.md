@@ -14,7 +14,7 @@ First, add a [log filter](https://help.papertrailapp.com/kb/how-it-works/log-fil
 
 Once deployed, the app can be added as a [count-only webhook alert](https://help.papertrailapp.com/kb/how-it-works/web-hooks/#count-only-webhooks) to any search that would indicate a problematic log velocity on 1-100 systems. If the webhook is not set to send counts, the app will return a 400.
 
-It's meant to run every minute, but that's not required. Keep in mind that if it doesn't run every minute, the settings for MAX_VELOCITY and SUSTAINED_DURATION should reflect that. 
+It's meant to run every minute, but that's not required. Keep in mind that if it doesn't run every minute, the settings for PAPERTRAIL_VELOCITY and PAPERTRAIL_DURATION should reflect that. 
 
 # How it works
 
