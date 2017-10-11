@@ -15,7 +15,6 @@ def mute_system_name(name, id)
   headers = { 'X-Papertrail-Token' => API_KEY }
   query = "system[name]=#{name}-muted"
   response = HTTParty.put("https://papertrailapp.com/api/v1/systems/#{id}.json", query: query, headers: headers)
-  puts response
 end
 
 # Initialize the number of times the alert has exceeded the threshold
@@ -31,17 +30,28 @@ end
 
 post '/log' do
   payload = Yajl::Parser.parse(params[:payload])
-  return [400, ["Not a valid count alert payload"]] unless payload['counts']
   counts = payload['counts']
+  # Sanity checking
+  return [400, ["Not a valid count alert payload"]] unless counts
+  return [400, ["Too many sources to check"]] if counts.length > 100
+
+  # Take each source and figure out its count and process it
   counts.each do |source|
     system_name = source['source_name']
     system_id = source['source_id']
     line_count = source['timeseries'].values.reduce(&:+)
+
     if line_count > MAX_VELOCITY && !system_name.match(/muted/)
       if mute_invocations[system_name] > SUSTAINED_DURATION
         puts "Muting #{system_name}, it has been above #{MAX_VELOCITY} for #{SUSTAINED_DURATION} invocations"
-        mute_system_name(system_name, system_id)
-        mute_invocations[system_name] = 0
+        response = mute_system_name(system_name, system_id)
+        if response.status == 200
+          puts "System updated: #{response.body}"
+          mute_invocations[system_name] = 0
+        else
+          puts "System update failed: #{response.status} #{response.body}"
+          # This branch doesn't reset the invocations, because the system didn't get muted.
+        end
       else
         puts "#{system_name} is above #{MAX_VELOCITY}, incrementing mute invocations"
         mute_invocations[system_name] += 1
@@ -51,5 +61,6 @@ post '/log' do
       mute_invocations[system_name] = 0
     end
   end
+
   200
 end
