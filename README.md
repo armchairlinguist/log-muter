@@ -2,6 +2,10 @@
 
 log-muter is a simple Sinatra webhook app (designed to be deployed to Heroku) that can auto-mute systems that are sending too many logs to Papertrail. This can help prevent [log floods](https://help.papertrailapp.com/kb/how-it-works/log-rate-notifications/) in a more fine-grained way.
 
+# IMPORTANT
+
+Using this webhok could result in missing logs, either by design or due to an unnoticed bug. Use at your own risk. See [Note](#note) for more.
+
 ## Setup
 
 The app needs a Papertrail API key to make requests to the Papertrail account - set this in the `PAPERTRAIL_API_KEY` env variable.
@@ -18,11 +22,15 @@ It's meant to run every minute, but that's not required. Keep in mind that if it
 
 # How it works
 
-This app is a bit of a hack. When it detects a sustained log spike, it changes the name of the system via the API to include `-muted`. From setup, there's already a log filter in place that filters messages containing `-muted`, so once the system name is updated, logs from it are effectively suppressed. (Past logs will also show the revised system name, for as long as it sticks around. This is useful, since it means it's easy to see when a system has been auto-muted.)
+This app is a bit of a hack. When it detects a sustained log spike, it changes the name of the system via [the Update System API](https://help.papertrailapp.com/kb/how-it-works/settings-api/#update-system) to include `-muted`. From [Setup](#setup), there's a log filter in place that filters messages containing `-muted`. Thus, once the system name is updated, logs from it are effectively suppressed. 
+
+Past logs will also show the revised system name, for as long as they stick around. This is useful, since it means it's easy to see when a system has been auto-muted.
 
 ## Note
 
-System auto-muting is a bit dangerous. It preserves the usability of the account at the expense of not collecting logs when a system is barfing. It might be worthwhile to set up this app with its own Papertrail alerts that let you know when a system is muted. If it's deployed to Heroku, attaching the Papertrail add-on means the logs can be checked for the message that indicates a system was muted and then send a notification. It's a little meta but it works.
+System auto-muting is risky. It preserves the usability of the account at the expense of not collecting logs when a system is barfing. It might be worthwhile to set up any deployment of this app with its own Papertrail alerts that let you know when a system is muted. 
+
+If it's deployed to Heroku, attaching the [Papertrail add-on](https://elements.heroku.com/addons/papertrail) means the logs can be checked for `Muting "it has been above"`, which indicates a system was muted, and that search can be attached to an alert that sends a notification to wherever is most useful. It's a little meta (an alert on an app that receives alerts?) but it works.
 
 # Limits
 
