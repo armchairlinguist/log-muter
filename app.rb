@@ -31,6 +31,7 @@ end
 
 post '/log' do
   payload = Yajl::Parser.parse(params[:payload])
+  puts payload
   counts = payload['counts']
   counts.each do |source|
     system_name = source['source_name']
