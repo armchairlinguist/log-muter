@@ -8,7 +8,7 @@ Using this webhook could result in missing logs, either by design or due to an u
 
 ## Setup
 
-The app needs a [Papertrail API key](https://help.papertrailapp.com/kb/how-it-works/http-api/#authentication) )with permission to edit any systems that might need muting) to make requests to the Papertrail account - set this in the `PAPERTRAIL_API_KEY` env variable.
+The app needs a [Papertrail API key](https://help.papertrailapp.com/kb/how-it-works/http-api/#authentication) (with permission to edit any systems that might need muting) to make requests to the Papertrail account - set this in the `PAPERTRAIL_API_KEY` env variable.
 
 A desirable log velocity will vary depending on the account. Setting a custom velocity threshold using `PAPERTRAIL_VELOCITY` is recommended. It's also possible to set the number of sequential alert invocations exceeding the threshold (`PAPERTRAIL_DURATION`) before the system is muted. For example, if this is set to 10 and the alert runs every minute (see below), the system must be rogue for 10 minutes before being muted.
 
