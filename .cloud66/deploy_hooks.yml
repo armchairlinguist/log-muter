@@ -17,7 +17,7 @@ development:
       target: sinatra
       sudo: true
       execute: true
-      apply_during: build_only
+      apply_during: all
 
     - command: sudo service remote_syslog restart
       target: sinatra
