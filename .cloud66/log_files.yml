@@ -1,4 +1,0 @@
-destination:
-  host: logs4.papertrailapp.com
-  port: 47196 # change to your port
-  protocol: tls
