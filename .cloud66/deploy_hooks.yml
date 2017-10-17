@@ -18,8 +18,8 @@ development:
       sudo: true
       execute: true
       apply_during: build_only
-
-    - command: service remote_syslog restart
-      target: sinatra
-      execute: true
-      apply_during: deploy_only
+    #
+    # - command: service remote_syslog restart
+    #   target: sinatra
+    #   execute: true
+    #   apply_during: deploy_only
