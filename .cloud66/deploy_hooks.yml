@@ -19,7 +19,7 @@ development:
       execute: true
       apply_during: build_only
 
-    - command: sudo service remote_syslog restart
+    - command: systemctl daemon-reload && sudo service remote_syslog restart
       target: sinatra
       execute: true
       apply_during: deploy_only
