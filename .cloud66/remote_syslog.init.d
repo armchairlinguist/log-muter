@@ -25,7 +25,7 @@ prog="remote_syslog"
 config="/etc/log_files.yml"
 pid_dir="/var/run"
 
-EXTRAOPTIONS="$STACK_PATH/log/*.log"
+EXTRAOPTIONS="$STACK_PATH/shared/log/*.log"
 
 pid_file="$pid_dir/$prog.pid"
 
