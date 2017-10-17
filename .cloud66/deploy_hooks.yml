@@ -17,4 +17,4 @@ development:
       target: sinatra
       sudo: true
       execute: true
-      apply_during: ass
+      apply_during: all
